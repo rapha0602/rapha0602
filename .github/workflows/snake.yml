@@ -6,22 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: Platane/snk/svg-only@v3
+      - uses: actions/checkout@v3
+
+      - uses: Platane/snk@v3
         with:
           github_user_name: rapha0602
           outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            output/github-contribution-grid-snake.svg
+            output/github-contribution-grid-snake-dark.svg?palette=github-dark
 
       - name: Push snake
-        uses: crazy-max/ghaction-github-pages@v3
+        uses: EndBug/add-and-commit@v9
         with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: "Generate contribution snake"
+          add: "output/*.svg"
